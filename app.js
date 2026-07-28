@@ -26,8 +26,11 @@
 
   function uniqueBrands() {
     const seen = new Map();
+    if (!DATA || !Array.isArray(DATA)) return [];
     DATA.forEach((r) => {
-      if (!seen.has(r.brand_ar)) seen.set(r.brand_ar, r.brand_en);
+      if (r && r.brand_ar && !seen.has(r.brand_ar)) {
+        seen.set(r.brand_ar, r.brand_en || "");
+      }
     });
     return Array.from(seen.entries()).sort((a, b) =>
       a[0].localeCompare(b[0], "ar")
