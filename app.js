@@ -114,7 +114,6 @@
     "اختار الماركة"
   );
 
-  // Quick Search Logic
   quickSearchInput.addEventListener("input", (e) => {
     const query = e.target.value.trim().toLowerCase();
     if (!query) return;
@@ -213,12 +212,14 @@
         </div>`;
     }).join("");
 
-    // الأرقام المخصصة لكل زر
     const phoneOrder = "201040919691";
     const phoneReport = "201061806336";
 
     const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالمقاس المطلوب: ${row[state.light]}`);
     const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في المقاس:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
+
+    // نص المشاركة للزوار
+    const shareMessage = `💡 دليل مقاسات لمبات السيارات من مطر لكماليات السيارات:\nسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n- الواطي: ${row.low_beam}\n- العالي: ${row.high_beam}\n- الشبورة: ${row.fog}\n\nابحث عن مقاس عربيتك من هنا: ${window.location.href}`;
 
     resultWrap.innerHTML = `
       <div class="result-card">
@@ -231,13 +232,31 @@
         </div>
         <div class="bulb-grid">${bulbItemsHtml}</div>
         
-        <div class="result-actions">
+        <div class="result-actions" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
           <a href="https://wa.me/${phoneOrder}?text=${waText}" target="_blank" class="btn-wa">💬 اطلب اللمبة الآن</a>
           <a href="https://wa.me/${phoneReport}?text=${reportText}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
+        </div>
+        <div>
+          <button id="btnShareResult" style="width: 100%; background: var(--blue); color: #fff; border: none; border-radius: 12px; padding: 12px; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">📤 مشاركة النتيجة مع الأصدقاء</button>
         </div>
       </div>
     `;
     resultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    // تفعيل زر المشاركة
+    document.getElementById("btnShareResult").addEventListener("click", () => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Matter LED Guide',
+          text: shareMessage,
+          url: window.location.href,
+        }).catch(() => {});
+      } else {
+        // لو المتصفح مش بيدعم الـ Share، ينسخ النص للحافظة
+        navigator.clipboard.writeText(shareMessage);
+        alert("تم نسخ تفاصيل النتيجة ورابط الموقع! يمكنك لصقها وشركتها على واتساب أو فيسبوك بكل سهولة.");
+      }
+    });
   });
 
   function escapeHtml(str) {
