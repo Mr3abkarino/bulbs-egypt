@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل لمبات السيارات — مصر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-950:#070d1a;
+  --navy-900:#0b1428;
+  --navy-800:#101d38;
+  --navy-700:#172a4d;
+  --blue:#2f6fed;
+  --blue-bright:#5b8dff;
+  --amber:#ffb020;
+  --amber-dim:#a97418;
+  --paper:#f4f6fb;
+  --slate:#8ea0c2;
+  --slate-dim:#5c6c8c;
+  --white:#ffffff;
+  --danger:#ff6b6b;
+  --font-display:'Tajawal', sans-serif;
+  --font-body:'IBM Plex Sans Arabic', sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--navy-950);
+  color:var(--paper);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+
+/* ===== Background texture: subtle beam sweep ===== */
+.beam-field{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(47,111,237,0.25), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 110% 20%, rgba(255,176,32,0.10), transparent 60%);
+}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px;
+  background:rgba(7,13,26,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.brand-mark{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-display); font-weight:900; font-size:1.05rem;
+  letter-spacing:0.2px;
+}
+.brand-mark .bulb-icon{
+  width:30px; height:30px; flex-shrink:0;
+}
+.brand-mark .accent{color:var(--amber);}
+.topbar-sub{font-size:0.68rem; color:var(--slate); font-weight:500; margin-top:1px;}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative; z-index:1;
+  padding:38px 20px 28px;
+  text-align:center;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:0.72rem; font-weight:700; color:var(--amber);
+  background:rgba(255,176,32,0.08);
+  border:1px solid rgba(255,176,32,0.25);
+  padding:6px 14px; border-radius:999px;
+  margin-bottom:18px;
+}
+.eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--amber); animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.35;}}
+.hero h1{
+  font-family:var(--font-display); font-weight:900;
+  font-size:1.9rem; line-height:1.35;
+  margin-bottom:12px;
+}
+.hero h1 .hi{color:var(--blue-bright);}
+.hero p{
+  color:var(--slate); font-size:0.92rem; max-width:480px; margin:0 auto;
+  line-height:1.7;
+}
+.hero .stats{
+  display:flex; justify-content:center; gap:28px; margin-top:22px;
+}
+.stat{text-align:center;}
+.stat b{
+  display:block; font-family:var(--font-display); font-weight:900;
+  font-size:1.4rem; color:var(--white);
+}
+.stat span{font-size:0.68rem; color:var(--slate-dim);}
+
+/* ===== Section shell ===== */
+.section{
+  position:relative; z-index:1;
+  max-width:640px; margin:0 auto;
+  padding:0 16px;
+}
+.panel-title{
+  display:flex; align-items:center; gap:10px;
+  margin:34px 0 14px;
+}
+.panel-title .num{
+  width:26px; height:26px; border-radius:8px;
+  background:var(--navy-700); color:var(--amber);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:900; font-size:0.85rem;
+  flex-shrink:0;
+}
+.panel-title h2{font-family:var(--font-display); font-weight:700; font-size:1.05rem;}
+
+/* ===== Search Card ===== */
+.search-card{
+  background:linear-gradient(165deg, var(--blue) 0%, #1e4fbf 100%);
+  border-radius:22px;
+  padding:26px 20px 22px;
+  box-shadow:0 20px 50px -20px rgba(47,111,237,0.6);
+  position:relative;
+  overflow:hidden;
+}
+.search-card::before{
+  content:"";
+  position:absolute; top:-60px; left:-60px;
+  width:220px; height:220px;
+  background:radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+  pointer-events:none;
+}
+.search-card h3{
+  font-family:var(--font-display); font-weight:900; font-size:1.35rem;
+  text-align:center; margin-bottom:20px; position:relative;
+}
+.field-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  position:relative;
+}
+.field{
+  background:rgba(255,255,255,0.94);
+  border-radius:14px;
+  position:relative;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.field.disabled{opacity:0.5; pointer-events:none;}
+.field:focus-within{box-shadow:0 0 0 3px rgba(255,176,32,0.55);}
+.field select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  width:100%; background:transparent; border:none;
+  padding:15px 40px 15px 14px;
+  font-family:var(--font-body); font-weight:600; font-size:0.85rem;
+  color:var(--navy-900);
+  cursor:pointer;
+}
+.field select:disabled{cursor:not-allowed;}
+.field .step-badge{
+  position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  width:20px; height:20px; border-radius:50%;
+  background:var(--navy-900); color:var(--amber);
+  font-size:0.65rem; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display);
+}
+.field .chev{
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  color:var(--slate-dim); font-size:0.7rem; pointer-events:none;
+}
+.action-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  margin-top:16px; position:relative;
+}
+.btn{
+  border:none; border-radius:14px; padding:15px 10px;
+  font-family:var(--font-display); font-weight:700; font-size:0.92rem;
+  cursor:pointer; transition:transform .12s ease, filter .12s ease;
+}
+.btn:active{transform:scale(0.97);}
+.btn-reset{
+  background:rgba(7,13,26,0.55); color:var(--paper);
+  border:1px solid rgba(255,255,255,0.15);
+}
+.btn-reset:hover{background:rgba(7,13,26,0.7);}
+.btn-search{
+  background:var(--amber); color:var(--navy-950);
+}
+.btn-search:hover{filter:brightness(1.08);}
+.btn-search:disabled{background:#8a7145; color:rgba(7,13,26,0.5); cursor:not-allowed;}
+
+/* ===== Results ===== */
+.result-wrap{margin-top:20px;}
+.result-empty{
+  text-align:center; padding:30px 16px;
+  color:var(--slate-dim); font-size:0.85rem;
+  border:1px dashed rgba(255,255,255,0.12); border-radius:16px;
+}
+.result-card{
+  background:var(--navy-800);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:18px; padding:20px;
+  animation:reveal 0.5s ease;
+}
+@keyframes reveal{
+  from{opacity:0; transform:translateY(14px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.result-head{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; padding-bottom:14px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.result-head .car-name{font-family:var(--font-display); font-weight:700; font-size:1.05rem;}
+.result-head .car-sub{font-size:0.72rem; color:var(--slate); margin-top:3px;}
+.result-head .year-chip{
+  background:rgba(255,176,32,0.12); color:var(--amber);
+  border:1px solid rgba(255,176,32,0.3);
+  padding:5px 12px; border-radius:999px; font-size:0.72rem; font-weight:700;
+  white-space:nowrap;
+}
+.bulb-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.bulb-item{
+  background:var(--navy-700); border-radius:14px; padding:14px;
+  border:1px solid transparent;
+  transition:border-color .2s ease;
+}
+.bulb-item.highlight{
+  border-color:var(--amber);
+  background:linear-gradient(160deg, rgba(255,176,32,0.14), var(--navy-700));
+}
+.bulb-item .lbl{
+  display:flex; align-items:center; gap:6px;
+  font-size:0.68rem; color:var(--slate); margin-bottom:6px; font-weight:600;
+}
+.bulb-item .code{
+  font-family:var(--font-display); font-weight:900; font-size:1.05rem;
+  color:var(--white); word-break:break-word;
+}
+.bulb-item.highlight .code{color:var(--amber);}
+
+/* ===== Reference strip: check your old bulb ===== */
+.ref-scroll{
+  display:flex; gap:12px; overflow-x:auto; padding:6px 2px 14px;
+  scrollbar-width:none;
+}
+.ref-scroll::-webkit-scrollbar{display:none;}
+.ref-card{
+  flex:0 0 auto; width:112px;
+  background:var(--navy-800); border:1px solid rgba(255,255,255,0.07);
+  border-radius:16px; padding:14px 10px 12px;
+  text-align:center;
+}
+.ref-card svg{width:52px; height:52px; margin-bottom:8px;}
+.ref-card .code{
+  display:inline-block; background:var(--blue); color:var(--white);
+  font-family:var(--font-display); font-weight:800; font-size:0.7rem;
+  padding:3px 9px; border-radius:999px;
+}
+.ref-card .name{font-size:0.62rem; color:var(--slate); margin-top:6px;}
+
+/* ===== Info footer ===== */
+.footer{
+  margin-top:44px; padding:26px 16px 40px;
+  text-align:center; color:var(--slate-dim); font-size:0.72rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.footer .logo-mini{
+  font-family:var(--font-display); font-weight:800; color:var(--slate);
+  margin-bottom:6px; font-size:0.8rem;
+}
+
+/* Datalist-ish search hint */
+.hint{font-size:0.68rem; color:rgba(255,255,255,0.75); text-align:center; margin-top:12px;}
+</style>
+</head>
+<body>
+
+<div class="beam-field"></div>
+
+<div class="topbar">
+  <div>
+    <div class="brand-mark">
+      <svg class="bulb-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C7.58 2 4 5.58 4 10c0 3.03 1.68 5.4 4 6.65V19a1 1 0 001 1h6a1 1 0 001-1v-2.35c2.32-1.25 4-3.62 4-6.65 0-4.42-3.58-8-8-8z" fill="#FFB020" opacity="0.9"/>
+        <rect x="10" y="21" width="4" height="2" rx="1" fill="#8ea0c2"/>
+      </svg>
+      <span>لمبات<span class="accent">.مصر</span></span>
+    </div>
+    <div class="topbar-sub">دليلك لمقاس اللمبة الصح</div>
+  </div>
+  <div style="font-size:0.68rem; color:var(--slate-dim); text-align:left;">
+    <span id="brandCount">35</span> ماركة · <span id="modelCount">164</span> موديل
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow"><span class="dot"></span> محدث لسيارات 2026</div>
+  <h1>مش عارف مقاس <span class="hi">لمبة عربيتك؟</span><br>هنقولك بالظبط</h1>
+  <p>اختار الماركة والموديل والسنة، وهنطلعلك مقاس لمبة الواطي والعالي والشبورة والإشارة بالظبط زي الوكيل.</p>
+  <div class="stats">
+    <div class="stat"><b>35</b><span>ماركة</span></div>
+    <div class="stat"><b>164</b><span>موديل</span></div>
+    <div class="stat"><b>4</b><span>أنواع إضاءة</span></div>
+  </div>
+</div>
+
+<div class="section" id="searchSection">
+  <div class="search-card">
+    <h3>ابحث عن المقاس المناسب</h3>
+    <div class="field-grid">
+      <div class="field" id="field-brand">
+        <span class="step-badge">١</span>
+        <select id="selBrand">
+          <option value="">اختار الماركة</option>
+        </select>
+        <span class="chev">▾</span>
+      </div>
+      <div class="field disabled" id="field-model">
+        <span class="step-badge">٢</span>
+        <select id="selModel" disabled>
+          <option value="">اختار الموديل</option>
+        </select>
+        <span class="chev">▾</span>
+      </div>
+      <div class="field disabled" id="field-year">
+        <span class="step-badge">٣</span>
+        <select id="selYear" disabled>
+          <option value="">اختار السنة</option>
+        </select>
+        <span class="chev">▾</span>
+      </div>
+      <div class="field disabled" id="field-light">
+        <span class="step-badge">٤</span>
+        <select id="selLight" disabled>
+          <option value="">اختار نوع الإضاءة</option>
+        </select>
+        <span class="chev">▾</span>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-reset" id="btnReset">إعادة</button>
+      <button class="btn btn-search" id="btnSearch" disabled>بحث</button>
+    </div>
+    <div class="hint">البيانات إرشادية — راجع الرقم المطبوع على اللمبة القديمة قبل الشراء</div>
+  </div>
+
+  <div class="result-wrap" id="resultWrap">
+    <div class="result-empty" id="resultEmpty">النتيجة هتظهر هنا بعد ما تختار عربيتك وتدوس بحث 🔍</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="panel-title">
+    <div class="num">؟</div>
+    <h2>مش متأكد من النوع؟ قيس لمبتك القديمة</h2>
+  </div>
+  <div class="ref-scroll" id="refScroll"></div>
+</div>
+
+<div class="footer">
+  <div class="logo-mini">لمبات.مصر</div>
+  البيانات مبنية على أكثر من 160 طراز شائع بالسوق المصري — للتأكد الكامل قارن بالرقم المطبوع على اللمبة الأصلية
+</div>
+
+<script id="bulb-data" type="application/json">[{"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "صني كلاسيك", "model_en": "N16", "years": "2007 - 2013", "low_beam": "H7", "high_beam": "H7", "fog": "H11 / H3", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "صني", "model_en": "N17 - الشكل الجديد", "years": "2015 - 2026", "low_beam": "H4 أو H7", "high_beam": "H4 أو H7", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "سنترا", "model_en": "Sentra", "years": "2014 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "قشقاي", "model_en": "Qashqai", "years": "2015 - 2026", "low_beam": "H7 / LED مدمج", "high_beam": "H9 / LED", "fog": "H11", "signal": "LED / PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "جوك", "model_en": "Juke", "years": "2012 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "إكس تريل", "model_en": "X-Trail", "years": "2016 - 2026", "low_beam": "LED مدمج / H7", "high_beam": "LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "باترول", "model_en": "Patrol", "years": "2010 - 2026", "low_beam": "HB4 (9006)", "high_beam": "HB3 (9005)", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "تيدا", "model_en": "Tiida - هاتشباك وسيدان", "years": "2006 - 2018", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "التيما", "model_en": "Altima", "years": "2008 - 2024", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "صني", "model_en": "B13 / B15 القديمة الشهيرة", "years": "1994 - 2006", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "P21W"}, {"brand_ar": "نيسان", "brand_en": "Nissan", "model_ar": "كارجو / بيك أب", "model_en": "Pick-up 1 طن", "years": "1995 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "غير متوفر", "signal": "P21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "كورولا", "model_en": "العارضة E140", "years": "2008 - 2012", "low_beam": "HB4 (9006) أو H7", "high_beam": "HB3 (9005)", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "كورولا", "model_en": "العيون الكورية E160", "years": "2014 - 2018", "low_beam": "H7", "high_beam": "HB3 (9005)", "fog": "H16 / H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "كورولا", "model_en": "الشكل الحديث E210", "years": "2019 - 2026", "low_beam": "LED مدمج / H7", "high_beam": "HB3 / LED", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "كورولا", "model_en": "التماسيح / الجمل القديمة", "years": "1998 - 2007", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "P21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "يارس", "model_en": "Yaris", "years": "2007 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "بيلتا", "model_en": "Belta", "years": "2022 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "راف 4", "model_en": "RAV4", "years": "2013 - 2026", "low_beam": "H11 / LED", "high_beam": "HB3 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "فورتشنر", "model_en": "Fortuner", "years": "2012 - 2026", "low_beam": "H11 / Bi-LED", "high_beam": "HB3", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "راش", "model_en": "Rush", "years": "2019 - 2024", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "أفانزا", "model_en": "Avanza", "years": "2008 - 2022", "low_beam": "H4", "high_beam": "H4", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "لاند كروزر", "model_en": "Land Cruiser", "years": "2008 - 2026", "low_beam": "HB4 / LED", "high_beam": "HB3 / LED", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "هايلوکس", "model_en": "Hilux Pick-up", "years": "2006 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H16 / H11", "signal": "PY21W"}, {"brand_ar": "تويوتا", "brand_en": "Toyota", "model_ar": "هايتس / ميكروباص", "model_en": "Hiace", "years": "2000 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "إلنترا", "model_en": "HD", "years": "2007 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "881 / H27", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "إلنترا", "model_en": "MD", "years": "2011 - 2015", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "إلنترا", "model_en": "AD", "years": "2016 - 2023", "low_beam": "H7 (عدسات)", "high_beam": "HB3 (9005)", "fog": "H11", "signal": "PY21W / LED"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "إلنترا", "model_en": "CN7", "years": "2021 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "توسان", "model_en": "Tucson - LM", "years": "2011 - 2015", "low_beam": "H7", "high_beam": "H1", "fog": "H27", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "توسان", "model_en": "Tucson - TL", "years": "2016 - 2020", "low_beam": "H7 / LED", "high_beam": "HB3", "fog": "H8 / LED", "signal": "LED / PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "توسان", "model_en": "Tucson - NX4", "years": "2021 - 2026", "low_beam": "LED مدمج بالكامل", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "أكسنت", "model_en": "RB", "years": "2011 - 2026", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H27 / 881", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "أكسنت", "model_en": "اتوس / فيرنا / بيرفكت القديمة", "years": "2004 - 2019", "low_beam": "H4", "high_beam": "H4", "fog": "H3 / H27", "signal": "P21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "كريتا", "model_en": "Creta", "years": "2016 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H8 / H11", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "بايون", "model_en": "Bayon", "years": "2022 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "آي 10 / أي 20 / أي 30", "model_en": "i10/i20/i30", "years": "2009 - 2026", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H11 / H27", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "سوناتا", "model_en": "Sonata", "years": "2006 - 2023", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "هيونداي", "brand_en": "Hyundai", "model_ar": "H1", "model_en": "ميكروباص / فاملي", "years": "2008 - 2022", "low_beam": "H4", "high_beam": "H4", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سبورتاج", "model_en": "SL", "years": "2011 - 2015", "low_beam": "H7", "high_beam": "H1", "fog": "H27", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سبورتاج", "model_en": "QL", "years": "2016 - 2021", "low_beam": "H7", "high_beam": "HB3 (9005)", "fog": "H8 / LED 4-عيون", "signal": "LED / PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سبورتاج", "model_en": "NQ5", "years": "2022 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سيراتو", "model_en": "Cerato - F/L & TD", "years": "2010 - 2013", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سيراتو", "model_en": "K3 / YD", "years": "2014 - 2018", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سيراتو", "model_en": "BD", "years": "2019 - 2022", "low_beam": "H7 / LED", "high_beam": "HB3", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سيراتو", "model_en": "شوارع القديمة / سبكترا", "years": "2004 - 2009", "low_beam": "H7", "high_beam": "H1", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "إكسيد", "model_en": "Xceed", "years": "2020 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سونيت", "model_en": "Sonet", "years": "2021 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سورينتو", "model_en": "Sorento", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "سول", "model_en": "Soul", "years": "2010 - 2023", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "بيكانتو", "model_en": "Picanto", "years": "2008 - 2022", "low_beam": "H4", "high_beam": "H4", "fog": "H8 / H27", "signal": "PY21W"}, {"brand_ar": "كيا", "brand_en": "Kia", "model_ar": "كارنز", "model_en": "Carens", "years": "2007 - 2018", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "أوبترا", "model_en": "كوري القديمة", "years": "2006 - 2013", "low_beam": "H7", "high_beam": "H1", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "أوبترا", "model_en": "الصيني الحديثة", "years": "2016 - 2023", "low_beam": "H4 (مشترك)", "high_beam": "H4 (مشترك)", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "أفيو", "model_en": "Aveo", "years": "2008 - 2020", "low_beam": "H4", "high_beam": "H4", "fog": "H11 / H3", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "كروز", "model_en": "Cruze", "years": "2010 - 2016", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "لانوس", "model_en": "Lanos", "years": "2000 - 2020", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "نوبيرا", "model_en": "Nubira", "years": "2004 - 2012", "low_beam": "H7", "high_beam": "H1", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "تعبئة / الدبابة", "model_en": "Pick-up", "years": "1995 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "غير متوفر", "signal": "P21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "كابتيفا", "model_en": "Captiva", "years": "2008 - 2026", "low_beam": "H7 / LED", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "تراكر", "model_en": "Tracker", "years": "2020 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "شيفروليه", "brand_en": "Chevrolet", "model_ar": "نصف نقل / ميكروباص", "model_en": "N300 Move/TFR", "years": "2010 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "أريزو 5", "model_en": "Arrizo 5", "years": "2019 - 2026", "low_beam": "H7 (عدسات)", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "أريزو 6 برو", "model_en": "Arrizo 6 Pro", "years": "2022 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "تيجو 3", "model_en": "Tiggo 3", "years": "2018 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "تيجو 7", "model_en": "Tiggo 7", "years": "2019 - 2026", "low_beam": "H7 / LED", "high_beam": "H1", "fog": "H11 / LED", "signal": "LED"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "تيجو 7 برو", "model_en": "Tiggo 7 Pro", "years": "2022 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "تيجو 8 / 8 برو", "model_en": "", "years": "2020 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "شيري", "brand_en": "Chery", "model_ar": "إنبي, اسبيرانزا", "model_en": "A11 / A516 / A113 / A21 القديمة", "years": "2006 - 2016", "low_beam": "H7 / H4", "high_beam": "H1 / H4", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG 5", "model_en": "", "years": "2020 - 2026", "low_beam": "H7 (عدسات)", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG 6", "model_en": "", "years": "2019 - 2024", "low_beam": "LED / H7", "high_beam": "LED / H1", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG ZS", "model_en": "", "years": "2018 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W / LED"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG HS", "model_en": "", "years": "2020 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG RX5", "model_en": "", "years": "2018 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG WHALE", "model_en": "", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "إم جي", "brand_en": "MG", "model_ar": "MG ONE", "model_en": "", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "بي واي دي", "brand_en": "BYD", "model_ar": "F3", "model_en": "الاقتصادية", "years": "2008 - 2026", "low_beam": "H4 (مشترك)", "high_beam": "H4 (مشترك)", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "بي واي دي", "brand_en": "BYD", "model_ar": "L3", "model_en": "", "years": "2015 - 2020", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "بي واي دي", "brand_en": "BYD", "model_ar": "Song Plus / Yuan", "model_en": "كهرباء/هجين", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "بي واي دي", "brand_en": "BYD", "model_ar": "F0", "model_en": "الهاتشباك الصغيرة", "years": "2010 - 2016", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "PY21W"}, {"brand_ar": "جيتور", "brand_en": "Jetour", "model_ar": "X70 / X70 Plus", "model_en": "", "years": "2020 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيتور", "brand_en": "Jetour", "model_ar": "داشينغ", "model_en": "Dashing", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيتور", "brand_en": "Jetour", "model_ar": "T2", "model_en": "", "years": "2024 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيتور", "brand_en": "Jetour", "model_ar": "X90 Plus", "model_en": "", "years": "2022 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "هافال", "brand_en": "Haval", "model_ar": "H6", "model_en": "", "years": "2021 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "هافال", "brand_en": "Haval", "model_ar": "جوليان", "model_en": "Jolion", "years": "2021 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "هافال", "brand_en": "Haval", "model_ar": "H2", "model_en": "", "years": "2016 - 2021", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شانجان", "brand_en": "Changan", "model_ar": "ألسفين", "model_en": "Alsvin", "years": "2021 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "شانجان", "brand_en": "Changan", "model_ar": "إمويس / سي إس 35 / سي إس 55", "model_en": "", "years": "2020 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "شانجان", "brand_en": "Changan", "model_ar": "يوني-ك / يوني-تي / يوني-في", "model_en": "UNI Series", "years": "2022 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيلي", "brand_en": "Geely", "model_ar": "إمجراند", "model_en": "Emgrand 7 / EC7", "years": "2012 - 2020", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "جيلي", "brand_en": "Geely", "model_ar": "أوكافانجو / كولراي", "model_en": "Okavango/Coolray", "years": "2020 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيلي", "brand_en": "Geely", "model_ar": "ستارري / مونجارو", "model_en": "Starray/Monjaro", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "جاك", "brand_en": "JAC", "model_ar": "JS3 / JS4", "model_en": "", "years": "2020 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "جاك", "brand_en": "JAC", "model_ar": "S2 / S4", "model_en": "", "years": "2016 - 2022", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "بايك", "brand_en": "BAIC", "model_ar": "X3 / X7 / U5 Plus", "model_en": "", "years": "2021 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "بيستون", "brand_en": "Bestune", "model_ar": "B70 / T33 / T77 / T90", "model_en": "", "years": "2021 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "سوايست", "brand_en": "SWM", "model_ar": "G01 / G01F / G05 Pro", "model_en": "", "years": "2021 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "لانسر بوما", "model_en": "Puma", "years": "2008 - 2015", "low_beam": "H7", "high_beam": "HB3 (9005)", "fog": "H11 / H3", "signal": "PY21W"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "لانسر شاركس", "model_en": "Shark", "years": "2008 - 2020", "low_beam": "H7", "high_beam": "HB3 (9005)", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "لانسر كريستالة / بطة", "model_en": "Old Lancer", "years": "1994 - 2007", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "P21W"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "إكليبس كروس", "model_en": "Eclipse Cross", "years": "2018 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "ميراج / أطراج", "model_en": "Mirage/Attrage", "years": "2014 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "إكسباندر", "model_en": "Xpander", "years": "2019 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "ميتسوبيشي", "brand_en": "Mitsubishi", "model_ar": "باجيرو", "model_en": "Pajero", "years": "2007 - 2022", "low_beam": "H7 / HID", "high_beam": "HB3", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "سويفت", "model_en": "Swift", "years": "2019 - 2026", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "ديزاير", "model_en": "Dzire", "years": "2019 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "ألتو", "model_en": "Alto", "years": "2014 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "غير متوفر", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "إرتيجا", "model_en": "Ertiga", "years": "2019 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "جراند فيتارا / بلس", "model_en": "", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "سياز", "model_en": "Ciaz", "years": "2016 - 2024", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "فان", "model_en": "Van 7-seater الشائعة", "years": "1990 - 2026", "low_beam": "H4", "high_beam": "H4", "fog": "غير متوفر", "signal": "P21W"}, {"brand_ar": "سوزوكي", "brand_en": "Suzuki", "model_ar": "بالينو / بريسو", "model_en": "Baleno/S-Presso", "years": "2020 - 2026", "low_beam": "H4 أو LED", "high_beam": "H4", "fog": "H16", "signal": "PY21W"}, {"brand_ar": "هوندا", "brand_en": "Honda", "model_ar": "سيفيك", "model_en": "Civic", "years": "2006 - 2026", "low_beam": "H7 / LED", "high_beam": "HB3 / LED", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "هوندا", "brand_en": "Honda", "model_ar": "سيتي", "model_en": "City", "years": "2009 - 2026", "low_beam": "H4 أو H7", "high_beam": "H4 أو H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "هوندا", "brand_en": "Honda", "model_ar": "سي آر في / إتش آر في", "model_en": "CR-V / HR-V", "years": "2008 - 2026", "low_beam": "H7 / LED", "high_beam": "HB3 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "ميجان", "model_en": "Megane III/IV", "years": "2010 - 2026", "low_beam": "H7 / LED Pure Vision", "high_beam": "H7", "fog": "H16 / H11", "signal": "LED / PY21W"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "داستر", "model_en": "Duster", "years": "2012 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "سانديرو / ستبواي", "model_en": "Sandero", "years": "2010 - 2024", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "لوجان", "model_en": "Logan", "years": "2010 - 2022", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "كادجار", "model_en": "Kadjar", "years": "2016 - 2022", "low_beam": "H7 / LED", "high_beam": "H1", "fog": "H16", "signal": "LED"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "كليو", "model_en": "Clio", "years": "2015 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "رينو", "brand_en": "Renault", "model_ar": "أوسترال", "model_en": "Austral", "years": "2023 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "بيجو", "brand_en": "Peugeot", "model_ar": "301", "model_en": "", "years": "2013 - 2023", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "بيجو", "brand_en": "Peugeot", "model_ar": "3008 / 5008", "model_en": "", "years": "2017 - 2026", "low_beam": "LED مدمج / H7", "high_beam": "LED / H1", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "بيجو", "brand_en": "Peugeot", "model_ar": "2008", "model_en": "", "years": "2020 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "بيجو", "brand_en": "Peugeot", "model_ar": "508", "model_en": "", "years": "2012 - 2026", "low_beam": "H7 / LED", "high_beam": "H1", "fog": "H11", "signal": "LED"}, {"brand_ar": "بيجو", "brand_en": "Peugeot", "model_ar": "504 / 405 / 307 القديمة جداً بمصر", "model_en": "", "years": "1980 - 2010", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "P21W"}, {"brand_ar": "سكودا", "brand_en": "Skoda", "model_ar": "أوكتافيا", "model_en": "A5 / A7 / A8", "years": "2008 - 2026", "low_beam": "H7 / Matrix LED", "high_beam": "H15 / LED", "fog": "H8 / LED", "signal": "LED"}, {"brand_ar": "سكودا", "brand_en": "Skoda", "model_ar": "كودياك", "model_en": "Kodiaq", "years": "2018 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "سكودا", "brand_en": "Skoda", "model_ar": "كاروك", "model_en": "Karoq", "years": "2019 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "سكودا", "brand_en": "Skoda", "model_ar": "سوبيرب", "model_en": "Superb", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H15 / LED", "fog": "H8", "signal": "LED"}, {"brand_ar": "سكودا", "brand_en": "Skoda", "model_ar": "فابيا / رمستر", "model_en": "Fabia / Roomster", "years": "2008 - 2022", "low_beam": "H7", "high_beam": "H1", "fog": "H8", "signal": "PY21W"}, {"brand_ar": "سيات", "brand_en": "Seat", "model_ar": "إبيزا", "model_en": "Ibiza", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H8", "signal": "LED"}, {"brand_ar": "سيات", "brand_en": "Seat", "model_ar": "ليون", "model_en": "Leon", "years": "2013 - 2024", "low_beam": "LED / H7", "high_beam": "LED / H15", "fog": "H8", "signal": "LED"}, {"brand_ar": "سيات", "brand_en": "Seat", "model_ar": "أتكا / أرونا / طراركو", "model_en": "Ateca/Arona/Tarraco", "years": "2018 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "فيات", "brand_en": "Fiat", "model_ar": "تيبو", "model_en": "Tipo - سيدان وهاتشباك", "years": "2018 - 2026", "low_beam": "H7", "high_beam": "H7", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "فيات", "brand_en": "Fiat", "model_ar": "بونتو", "model_en": "Punto", "years": "2010 - 2018", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "فيات", "brand_en": "Fiat", "model_ar": "أونو / ريتمو / ڤورورا / سيينا / بيرلا", "model_en": "", "years": "1990 - 2010", "low_beam": "H4", "high_beam": "H4", "fog": "H3", "signal": "P21W"}, {"brand_ar": "أوبل", "brand_en": "Opel", "model_ar": "أسترا", "model_en": "Astra", "years": "2010 - 2024", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "أوبل", "brand_en": "Opel", "model_ar": "موكا", "model_en": "Mokka", "years": "2015 - 2026", "low_beam": "H7 / LED", "high_beam": "H1", "fog": "H11", "signal": "LED"}, {"brand_ar": "أوبل", "brand_en": "Opel", "model_ar": "كروسلاند", "model_en": "Crossland", "years": "2021 - 2026", "low_beam": "LED مدمج", "high_beam": "LED مدمج", "fog": "LED", "signal": "LED"}, {"brand_ar": "أوبل", "brand_en": "Opel", "model_ar": "إنسيغنيا / كورسا", "model_en": "Insignia / Corsa", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "سيتروين", "brand_en": "Citroen", "model_ar": "C3 / C4 / C5 أيروكراس", "model_en": "", "years": "2018 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11 / LED", "signal": "LED"}, {"brand_ar": "سيتروين", "brand_en": "Citroen", "model_ar": "سي-إليزيه", "model_en": "C-Elysee", "years": "2013 - 2023", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "فولكس فاجن", "brand_en": "Volkswagen", "model_ar": "جولف", "model_en": "Golf 6/7/8", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H15 / LED", "fog": "H8", "signal": "LED"}, {"brand_ar": "فولكس فاجن", "brand_en": "Volkswagen", "model_ar": "پاسات", "model_en": "Passat", "years": "2011 - 2023", "low_beam": "H7 / LED", "high_beam": "H15 / LED", "fog": "H8", "signal": "LED"}, {"brand_ar": "فولكس فاجن", "brand_en": "Volkswagen", "model_ar": "تيجوان", "model_en": "Tiguan", "years": "2012 - 2026", "low_beam": "H7 / LED", "high_beam": "H15 / LED", "fog": "H8", "signal": "LED"}, {"brand_ar": "فولكس فاجن", "brand_en": "Volkswagen", "model_ar": "جيتا / بولو", "model_en": "Jetta / Polo", "years": "2008 - 2023", "low_beam": "H7", "high_beam": "H1 / H15", "fog": "H8", "signal": "PY21W"}, {"brand_ar": "ألفا روميو", "brand_en": "Alfa Romeo", "model_ar": "جولييتا / تونالي / ستيلفيو", "model_en": "Giulietta/Tonale", "years": "2012 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "LED"}, {"brand_ar": "دي إس", "brand_en": "DS", "model_ar": "DS 3 / DS 4 / DS 7", "model_en": "", "years": "2019 - 2026", "low_beam": "LED مدمج بالكامل", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "مرسيدس", "brand_en": "Mercedes-Benz", "model_ar": "C-Class", "model_en": "W204 / W205 / W206", "years": "2008 - 2026", "low_beam": "LED Intelligent / H7", "high_beam": "LED", "fog": "LED / H11", "signal": "LED"}, {"brand_ar": "مرسيدس", "brand_en": "Mercedes-Benz", "model_ar": "E-Class", "model_en": "W212 / W213 / W214", "years": "2009 - 2026", "low_beam": "Multi-Beam LED", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "مرسيدس", "brand_en": "Mercedes-Benz", "model_ar": "GLC / GLE / GLA / A-Class", "model_en": "", "years": "2015 - 2026", "low_beam": "LED بالكامل", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "مرسيدس", "brand_en": "Mercedes-Benz", "model_ar": "سبرينتر / فيتو", "model_en": "Sprinter / Vito ميكروباص", "years": "2008 - 2026", "low_beam": "H7", "high_beam": "H1", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "بي إم دبليو", "brand_en": "BMW", "model_ar": "الفئة الثالثة", "model_en": "F30 / G20", "years": "2012 - 2026", "low_beam": "LED / Laser", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "بي إم دبليو", "brand_en": "BMW", "model_ar": "الفئة الخامسة", "model_en": "F10 / G30 / G60", "years": "2010 - 2026", "low_beam": "Adaptive LED", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "بي إم دبليو", "brand_en": "BMW", "model_ar": "عائلة X", "model_en": "X1, X3, X5, X6, X7", "years": "2011 - 2026", "low_beam": "LED مدمج بالكامل", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "بي إم دبليو", "brand_en": "BMW", "model_ar": "الفئة الأولى والثانية", "model_en": "1 Series / 2 Series", "years": "2014 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "أودي", "brand_en": "Audi", "model_ar": "A3 / A4 / A6", "model_en": "", "years": "2011 - 2026", "low_beam": "Matrix LED / Bi-Xenon", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "أودي", "brand_en": "Audi", "model_ar": "Q3 / Q5 / Q7 / Q8", "model_en": "", "years": "2012 - 2026", "low_beam": "Matrix LED", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "لاند روفر / رنج روفر", "brand_en": "Land Rover", "model_ar": "فيلار / إيفوك / سبورت / ديفندر", "model_en": "", "years": "2012 - 2026", "low_beam": "Matrix LED مدمج", "high_beam": "LED", "fog": "LED", "signal": "LED"}, {"brand_ar": "جيب", "brand_en": "Jeep", "model_ar": "رينيجيد / جراند شيروكي / رانجلر", "model_en": "", "years": "2010 - 2026", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11 / LED", "signal": "LED / PY21W"}, {"brand_ar": "فورد", "brand_en": "Ford", "model_ar": "فوكس / فيوجن / إسكيب", "model_en": "Focus / Fusion", "years": "2010 - 2024", "low_beam": "H7 / LED", "high_beam": "H1 / LED", "fog": "H11", "signal": "PY21W"}, {"brand_ar": "فورد", "brand_en": "Ford", "model_ar": "كوجا / إكسبلورر", "model_en": "Kuga / Explorer", "years": "2012 - 2026", "low_beam": "LED / H7", "high_beam": "LED", "fog": "H11", "signal": "LED"}]</script>
+<script src="app.js"></script>
+</body>
+</html>
