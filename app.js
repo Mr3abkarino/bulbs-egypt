@@ -213,6 +213,10 @@
         </div>`;
     }).join("");
 
+    // الأرقام المخصصة لكل زر
+    const phoneOrder = "201040919691";
+    const phoneReport = "201061806336";
+
     const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالمقاس المطلوب: ${row[state.light]}`);
     const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في المقاس:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
 
@@ -228,8 +232,8 @@
         <div class="bulb-grid">${bulbItemsHtml}</div>
         
         <div class="result-actions">
-          <a href="https://wa.me/?text=${waText}" target="_blank" class="btn-wa">💬 اطلب اللمبة الآن</a>
-          <a href="https://wa.me/?text=${reportText}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
+          <a href="https://wa.me/${phoneOrder}?text=${waText}" target="_blank" class="btn-wa">💬 اطلب اللمبة الآن</a>
+          <a href="https://wa.me/${phoneReport}?text=${reportText}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
         </div>
       </div>
     `;
