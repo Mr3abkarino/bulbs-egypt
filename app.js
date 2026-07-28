@@ -92,7 +92,6 @@
     fieldEl.classList.toggle("disabled", !enabled);
   }
 
-  // ميزة البحث الذكي (تدعم أسماء السيارات أو أكواد اللمبات مثل H7)
   quickSearchInput.addEventListener("input", (e) => {
     const query = e.target.value.trim().toLowerCase();
     if (!query || DATA.length === 0) return;
@@ -191,6 +190,16 @@
         </div>`;
     }).join("");
 
+    // فحص ذكي لتحديد ما إذا كانت السيارة حديثة وتتطلب مقاومة (Canbus)
+    const europeanBrands = ["سكودا", "سيات", "فولكس فاجن", "مرسيدس بنز", "بي إم دبليو", "أودي", "أوبل", "بيجو", "سيتروين", "لاند روفر / رنج روفر", "ألفا روميو", "دي إس"];
+    const isEuropean = europeanBrands.includes(row.brand_ar) || parseInt(state.year) >= 2020;
+    
+    const canbusAlertHtml = isEuropean ? `
+      <div style="background: rgba(255,176,32,0.12); border: 1px dashed var(--amber); border-radius: 12px; padding: 12px; margin-bottom: 12px; font-size: 0.75rem; color: var(--paper); line-height: 1.5;">
+        ⚠️ <strong>تنبيه فني للمقاومة (Canbus):</strong> هذه السيارة حديثة أو أوروبية التجهيز، وقد تحتاج لتركيب ليد مزود بمقاومة (Canbus Decoder) لمنع ظهور رسائل الأعطال بالتابلوه أو الرفرفة.
+      </div>
+    ` : '';
+
     const textToCopy = `🚗 سيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n🔹 الواطي: ${row.low_beam}\n🔸 العالي: ${row.high_beam}\n⚡ الشبورة: ${row.fog}\n📍 الإشارة: ${row.signal}`;
 
     resultWrap.innerHTML = `
@@ -204,7 +213,9 @@
         </div>
         <div class="bulb-grid">${bulbItemsHtml}</div>
         
-        <button id="btnCopyData" class="btn-copy">📋 نسخ كافة الأرقام بضغطة واحدة</button>
+        ${canbusAlertHtml}
+
+        <button id="btnCopyData" class="btn-copy" style="background: var(--blue); color: #fff; border: none; border-radius: 12px; padding: 12px; font-weight: 700; font-size: 0.82rem; cursor: pointer; width: 100%; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">📋 نسخ كافة الأرقام بضغطة واحدة</button>
 
         <div class="result-actions">
           <a href="https://wa.me/201040919691?text=${encodeURIComponent('أبحث عن لمبة للسيارة: ' + row.brand_ar + ' ' + row.model_ar + ' (' + state.year + ')')}" target="_blank" class="btn-wa">💬 اطلب اللمبة</a>
@@ -213,10 +224,9 @@
       </div>
     `;
 
-    // تفعيل زر النسخ الذكي
     document.getElementById("btnCopyData").addEventListener("click", () => {
       navigator.clipboard.writeText(textToCopy).then(() => {
-        alert("📋 تم نسخ تفاصيل الأرقام بنجاح! يمكنك لصقها مباشرة في رسالة أو ورقة.");
+        alert("📋 تم نسخ تفاصيل الأرقام بنجاح!");
       }).catch(() => {
         alert("تعذر النسخ تلقائياً.");
       });
@@ -228,7 +238,7 @@
   function resetFrom(level) {
     if (level === "brand") {
       state.modelIdx = null; fillSelect(selModel, [], "اختار الموديل"); setFieldEnabled(fieldModel, selModel, false);
-      state.year = ""; fillSelect(selYear, [], "اختار السنة"); setFieldEnabled(fieldYear, selYear, false);
+      state.year = ""; fillSelect(selYear, [], "اختار السنةة"); setFieldEnabled(fieldYear, selYear, false);
       state.light = ""; fillSelect(selLight, [], "اختار نوع الإضاءة"); setFieldEnabled(fieldLight, selLight, false);
     } else if (level === "model") {
       state.year = ""; fillSelect(selYear, [], "اختار السنة"); setFieldEnabled(fieldYear, selYear, false);
