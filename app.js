@@ -1,13 +1,11 @@
 (function () {
   "use strict";
 
-  const DATA = JSON.parse(document.getElementById("bulb-data").textContent);
-
   const LIGHT_TYPES = [
     { key: "low_beam", label: "الواطي (Low Beam)" },
     { key: "high_beam", label: "العالي (High Beam)" },
     { key: "fog", label: "الشبورة (Fog)" },
-    { key: "signal", label: "الإشارة / الإضاءة (Signal)" },
+    { key: "signal", label: "الإشارة والملاحظات (Signal & Notes)" },
   ];
 
   const selBrand = document.getElementById("selBrand");
@@ -22,11 +20,34 @@
   const resultWrap = document.getElementById("resultWrap");
   const quickSearchInput = document.getElementById("quickSearchInput");
 
+  let DATA = [];
   let state = { brand: "", modelIdx: null, year: "", light: "" };
+
+  // تحميل البيانات من ملف data.json الخارجي بأمان تام
+  fetch('data.json')
+    .then(res => res.json())
+    .then(data => {
+      DATA = data;
+      initApp();
+    })
+    .catch(err => {
+      console.error("Error loading car data:", err);
+      selBrand.innerHTML = '<option value="">خطأ في تحميل البيانات</option>';
+    });
+
+  function initApp() {
+    fillSelect(
+      selBrand,
+      uniqueBrands().map(([ar, en]) => ({
+        value: ar,
+        text: en ? `${ar} (${en})` : ar,
+      })),
+      "اختار الماركة"
+    );
+  }
 
   function uniqueBrands() {
     const seen = new Map();
-    if (!DATA || !Array.isArray(DATA)) return [];
     DATA.forEach((r) => {
       if (r && r.brand_ar && !seen.has(r.brand_ar)) {
         seen.set(r.brand_ar, r.brand_en || "");
@@ -72,86 +93,10 @@
     fieldEl.classList.toggle("disabled", !enabled);
   }
 
-  function clearModelField() {
-    state.modelIdx = null;
-    fillSelect(selModel, [], "اختار الموديل");
-    setFieldEnabled(fieldModel, selModel, false);
-  }
-  function clearYearField() {
-    state.year = "";
-    fillSelect(selYear, [], "اختار السنة");
-    setFieldEnabled(fieldYear, selYear, false);
-  }
-  function clearLightField() {
-    state.light = "";
-    fillSelect(selLight, [], "اختار نوع الإضاءة");
-    setFieldEnabled(fieldLight, selLight, false);
-  }
-
-  function resetFrom(level) {
-    if (level === "brand") {
-      clearModelField();
-      clearYearField();
-      clearLightField();
-    } else if (level === "model") {
-      clearYearField();
-      clearLightField();
-    } else if (level === "year") {
-      clearLightField();
-    }
-    btnSearch.disabled = true;
-    showEmptyResult();
-  }
-
-  function showEmptyResult() {
-    resultWrap.innerHTML =
-      '<div class="result-empty" id="resultEmpty">النتيجة هتظهر هنا بعد ما تختار عربيتك وتدوس بحث 🔍</div>';
-  }
-
-  fillSelect(
-    selBrand,
-    uniqueBrands().map(([ar, en]) => ({
-      value: ar,
-      text: en ? `${ar} (${en})` : ar,
-    })),
-    "اختار الماركة"
-  );
-
-  quickSearchInput.addEventListener("input", (e) => {
-    const query = e.target.value.trim().toLowerCase();
-    if (!query) return;
-
-    const foundIdx = DATA.findIndex(item => 
-      item.brand_ar.toLowerCase().includes(query) ||
-      item.model_ar.toLowerCase().includes(query) ||
-      (item.model_en && item.model_en.toLowerCase().includes(query))
-    );
-
-    if (foundIdx !== -1) {
-      const match = DATA[foundIdx];
-      selBrand.value = match.brand_ar;
-      selBrand.dispatchEvent(new Event('change'));
-
-      setTimeout(() => {
-        selModel.value = String(foundIdx);
-        selModel.dispatchEvent(new Event('change'));
-
-        setTimeout(() => {
-          const years = parseYearRange(match.years);
-          if (years.length > 0) {
-            selYear.value = years[0];
-            selYear.dispatchEvent(new Event('change'));
-          }
-        }, 50);
-      }, 50);
-    }
-  });
-
   selBrand.addEventListener("change", () => {
     state.brand = selBrand.value;
     resetFrom("brand");
     if (!state.brand) return;
-
     const models = modelsForBrand(state.brand);
     fillSelect(
       selModel,
@@ -198,14 +143,13 @@
   btnReset.addEventListener("click", () => {
     state = { brand: "", modelIdx: null, year: "", light: "" };
     selBrand.value = "";
-    quickSearchInput.value = "";
+    if(quickSearchInput) quickSearchInput.value = "";
     resetFrom("brand");
   });
 
   btnSearch.addEventListener("click", () => {
     if (state.modelIdx === null || !state.light) return;
     const row = DATA[state.modelIdx];
-
     const bulbItemsHtml = LIGHT_TYPES.map((lt) => {
       const isHighlight = lt.key === state.light;
       return `
@@ -215,85 +159,42 @@
         </div>`;
     }).join("");
 
-    const phoneOrder = "201040919691";
-    const phoneReport = "201061806336";
-
-    const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالرقم المطلوب: ${row[state.light]}`);
-    const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في الرقم:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
-
-    const shareMessage = `💡 دليل أرقام لمبات السيارات من مطر لكماليات السيارات:\nسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n- الواطي: ${row.low_beam}\n- العالي: ${row.high_beam}\n- الشبورة: ${row.fog}\n\nابحث عن رقم لمبة عربيتك من هنا: ${window.location.href}`;
-
     resultWrap.innerHTML = `
       <div class="result-card">
         <div class="result-head">
           <div>
             <div class="car-name">${escapeHtml(row.brand_ar)} ${escapeHtml(row.model_ar)}</div>
-            <div class="car-sub">${escapeHtml(row.brand_en)} ${escapeHtml(row.model_en)} · موديل ${escapeHtml(state.year)}</div>
+            <div style="font-size:0.72rem; color:var(--slate);">${escapeHtml(row.model_en)} · موديل ${escapeHtml(state.year)}</div>
           </div>
           <div class="year-chip">${escapeHtml(row.years)}</div>
         </div>
         <div class="bulb-grid">${bulbItemsHtml}</div>
-        
-        <div class="result-actions" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
-          <a href="https://wa.me/${phoneOrder}?text=${waText}" target="_blank" class="btn-wa">💬 اطلب اللمبة الآن</a>
-          <a href="https://wa.me/${phoneReport}?text=${reportText}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
-        </div>
-        <div>
-          <button id="btnShareResult" style="width: 100%; background: var(--blue); color: #fff; border: none; border-radius: 12px; padding: 12px; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">📤 مشاركة النتيجة مع الأصدقاء</button>
+        <div class="result-actions">
+          <a href="https://wa.me/201040919691?text=${encodeURIComponent('أبحث عن لمبة: ' + row.brand_ar + ' ' + row.model_ar)}" target="_blank" class="btn-wa">💬 اطلب اللمبة</a>
+          <a href="https://wa.me/201061806336?text=${encodeURIComponent('بلاغ خطأ في سيارة: ' + row.brand_ar + ' ' + row.model_ar)}" target="_blank" class="btn-report">⚠️ إبلاغ</a>
         </div>
       </div>
     `;
-    resultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-    document.getElementById("btnShareResult").addEventListener("click", () => {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Matter LED Guide',
-          text: shareMessage,
-          url: window.location.href,
-        }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(shareMessage);
-        alert("تم نسخ تفاصيل النتيجة ورابط الموقع! يمكنك لصقها ومشاركتها على واتساب أو فيسبوك بكل سهولة.");
-      }
-    });
   });
+
+  function resetFrom(level) {
+    if (level === "brand") {
+      state.modelIdx = null; fillSelect(selModel, [], "اختار الموديل"); setFieldEnabled(fieldModel, selModel, false);
+      state.year = ""; fillSelect(selYear, [], "اختار السنة"); setFieldEnabled(fieldYear, selYear, false);
+      state.light = ""; fillSelect(selLight, [], "اختار نوع الإضاءة"); setFieldEnabled(fieldLight, selLight, false);
+    } else if (level === "model") {
+      state.year = ""; fillSelect(selYear, [], "اختار السنة"); setFieldEnabled(fieldYear, selYear, false);
+      state.light = ""; fillSelect(selLight, [], "اختار نوع الإضاءة"); setFieldEnabled(fieldLight, selLight, false);
+    } else if (level === "year") {
+      state.light = ""; fillSelect(selLight, [], "اختار نوع الإضاءة"); setFieldEnabled(fieldLight, selLight, false);
+    }
+    btnSearch.disabled = true;
+    resultWrap.innerHTML = '<div class="result-empty">النتيجة هتظهر هنا بعد ما تختار عربيتك وتدوس بحث 🔍</div>';
+  }
 
   function escapeHtml(str) {
     return String(str ?? "").replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[c]));
   }
-
-  const REF_BULBS = [
-    { code: "H4", name: "لمبة موحدة" },
-    { code: "H7", name: "قابس واحد" },
-    { code: "H1", name: "لمبة عالي شائعة" },
-    { code: "H11", name: "شبورة/واطي" },
-    { code: "9005 / HB3", name: "عالي أمريكي" },
-    { code: "9006 / HB4", name: "واطي أمريكي" },
-    { code: "PY21W", name: "إشارة كهرمانية" },
-    { code: "LED", name: "وحدة مدمجة" },
-  ];
-
-  const bulbSvg = () => `
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 2C7.58 2 4 5.58 4 10c0 3.03 1.68 5.4 4 6.65V19a1 1 0 001 1h6a1 1 0 001-1v-2.35c2.32-1.25 4-3.62 4-6.65 0-4.42-3.58-8-8-8z" fill="#5b8dff" opacity="0.85"/>
-      <rect x="10" y="21" width="4" height="2" rx="1" fill="#8ea0c2"/>
-      <path d="M9 10l2 2 4-4" stroke="#0b1428" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`;
-
-  const refScroll = document.getElementById("refScroll");
-  refScroll.innerHTML = REF_BULBS.map(
-    (b) => `
-    <div class="ref-card">
-      ${bulbSvg()}
-      <div class="code">${escapeHtml(b.code)}</div>
-      <div class="name">${escapeHtml(b.name)}</div>
-    </div>`
-  ).join("");
 })();
