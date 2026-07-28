@@ -20,10 +20,10 @@
   const btnSearch = document.getElementById("btnSearch");
   const btnReset = document.getElementById("btnReset");
   const resultWrap = document.getElementById("resultWrap");
+  const quickSearchInput = document.getElementById("quickSearchInput");
 
   let state = { brand: "", modelIdx: null, year: "", light: "" };
 
-  // ---- helpers ----
   function uniqueBrands() {
     const seen = new Map();
     DATA.forEach((r) => {
@@ -41,7 +41,6 @@
   }
 
   function parseYearRange(yearsStr) {
-    // formats like "2007 - 2013" or "1990 - 2026"
     const m = String(yearsStr).match(/(\d{4})\s*-\s*(\d{4})/);
     if (!m) return [String(yearsStr)];
     const start = parseInt(m[1], 10);
@@ -86,7 +85,6 @@
     setFieldEnabled(fieldLight, selLight, false);
   }
 
-  // Clears everything BELOW the given level (does not touch the level itself)
   function resetFrom(level) {
     if (level === "brand") {
       clearModelField();
@@ -107,7 +105,6 @@
       '<div class="result-empty" id="resultEmpty">النتيجة هتظهر هنا بعد ما تختار عربيتك وتدوس بحث 🔍</div>';
   }
 
-  // ---- init brand select ----
   fillSelect(
     selBrand,
     uniqueBrands().map(([ar, en]) => ({
@@ -117,7 +114,37 @@
     "اختار الماركة"
   );
 
-  // ---- events ----
+  // Quick Search Logic
+  quickSearchInput.addEventListener("input", (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (!query) return;
+
+    const foundIdx = DATA.findIndex(item => 
+      item.brand_ar.toLowerCase().includes(query) ||
+      item.model_ar.toLowerCase().includes(query) ||
+      (item.model_en && item.model_en.toLowerCase().includes(query))
+    );
+
+    if (foundIdx !== -1) {
+      const match = DATA[foundIdx];
+      selBrand.value = match.brand_ar;
+      selBrand.dispatchEvent(new Event('change'));
+
+      setTimeout(() => {
+        selModel.value = String(foundIdx);
+        selModel.dispatchEvent(new Event('change'));
+
+        setTimeout(() => {
+          const years = parseYearRange(match.years);
+          if (years.length > 0) {
+            selYear.value = years[0];
+            selYear.dispatchEvent(new Event('change'));
+          }
+        }, 50);
+      }, 50);
+    }
+  });
+
   selBrand.addEventListener("change", () => {
     state.brand = selBrand.value;
     resetFrom("brand");
@@ -169,6 +196,7 @@
   btnReset.addEventListener("click", () => {
     state = { brand: "", modelIdx: null, year: "", light: "" };
     selBrand.value = "";
+    quickSearchInput.value = "";
     resetFrom("brand");
   });
 
@@ -185,22 +213,24 @@
         </div>`;
     }).join("");
 
+    const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالمقاس المطلوب: ${row[state.light]}`);
+    const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في المقاس:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
+
     resultWrap.innerHTML = `
       <div class="result-card">
         <div class="result-head">
           <div>
-            <div class="car-name">${escapeHtml(row.brand_ar)} ${escapeHtml(
-      row.model_ar
-    )}</div>
-            <div class="car-sub">${escapeHtml(
-              row.brand_en
-            )} ${escapeHtml(row.model_en)} · موديل ${escapeHtml(
-      state.year
-    )}</div>
+            <div class="car-name">${escapeHtml(row.brand_ar)} ${escapeHtml(row.model_ar)}</div>
+            <div class="car-sub">${escapeHtml(row.brand_en)} ${escapeHtml(row.model_en)} · موديل ${escapeHtml(state.year)}</div>
           </div>
           <div class="year-chip">${escapeHtml(row.years)}</div>
         </div>
         <div class="bulb-grid">${bulbItemsHtml}</div>
+        
+        <div class="result-actions">
+          <a href="https://wa.me/?text=${waText}" target="_blank" class="btn-wa">💬 اطلب اللمبة الآن</a>
+          <a href="https://wa.me/?text=${reportText}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
+        </div>
       </div>
     `;
     resultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -216,7 +246,6 @@
     }[c]));
   }
 
-  // ---- reference bulb-shape strip ("check your old bulb") ----
   const REF_BULBS = [
     { code: "H4", name: "لمبة موحدة" },
     { code: "H7", name: "قابس واحد" },
