@@ -23,7 +23,6 @@
   let DATA = [];
   let state = { brand: "", modelIdx: null, year: "", light: "" };
 
-  // تحميل البيانات من ملف data.json الخارجي بأمان تام
   fetch('data.json')
     .then(res => res.json())
     .then(data => {
@@ -93,6 +92,39 @@
     fieldEl.classList.toggle("disabled", !enabled);
   }
 
+  // ميزة البحث الذكي (تدعم أسماء السيارات أو أكواد اللمبات مثل H7)
+  quickSearchInput.addEventListener("input", (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (!query || DATA.length === 0) return;
+
+    const foundIdx = DATA.findIndex(item => 
+      item.brand_ar.toLowerCase().includes(query) ||
+      item.model_ar.toLowerCase().includes(query) ||
+      (item.model_en && item.model_en.toLowerCase().includes(query)) ||
+      item.low_beam.toLowerCase().includes(query) ||
+      item.high_beam.toLowerCase().includes(query)
+    );
+
+    if (foundIdx !== -1) {
+      const match = DATA[foundIdx];
+      selBrand.value = match.brand_ar;
+      selBrand.dispatchEvent(new Event('change'));
+
+      setTimeout(() => {
+        selModel.value = String(foundIdx);
+        selModel.dispatchEvent(new Event('change'));
+
+        setTimeout(() => {
+          const years = parseYearRange(match.years);
+          if (years.length > 0) {
+            selYear.value = years[0];
+            selYear.dispatchEvent(new Event('change'));
+          }
+        }, 50);
+      }, 50);
+    }
+  });
+
   selBrand.addEventListener("change", () => {
     state.brand = selBrand.value;
     resetFrom("brand");
@@ -159,6 +191,8 @@
         </div>`;
     }).join("");
 
+    const textToCopy = `🚗 سيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n🔹 الواطي: ${row.low_beam}\n🔸 العالي: ${row.high_beam}\n⚡ الشبورة: ${row.fog}\n📍 الإشارة: ${row.signal}`;
+
     resultWrap.innerHTML = `
       <div class="result-card">
         <div class="result-head">
@@ -169,12 +203,26 @@
           <div class="year-chip">${escapeHtml(row.years)}</div>
         </div>
         <div class="bulb-grid">${bulbItemsHtml}</div>
+        
+        <button id="btnCopyData" class="btn-copy">📋 نسخ كافة الأرقام بضغطة واحدة</button>
+
         <div class="result-actions">
-          <a href="https://wa.me/201040919691?text=${encodeURIComponent('أبحث عن لمبة: ' + row.brand_ar + ' ' + row.model_ar)}" target="_blank" class="btn-wa">💬 اطلب اللمبة</a>
-          <a href="https://wa.me/201061806336?text=${encodeURIComponent('بلاغ خطأ في سيارة: ' + row.brand_ar + ' ' + row.model_ar)}" target="_blank" class="btn-report">⚠️ إبلاغ</a>
+          <a href="https://wa.me/201040919691?text=${encodeURIComponent('أبحث عن لمبة للسيارة: ' + row.brand_ar + ' ' + row.model_ar + ' (' + state.year + ')')}" target="_blank" class="btn-wa">💬 اطلب اللمبة</a>
+          <a href="https://wa.me/201061806336?text=${encodeURIComponent('بلاغ خطأ في سيارة: ' + row.brand_ar + ' ' + row.model_ar)}" target="_blank" class="btn-report">⚠️ إبلاغ عن خطأ</a>
         </div>
       </div>
     `;
+
+    // تفعيل زر النسخ الذكي
+    document.getElementById("btnCopyData").addEventListener("click", () => {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert("📋 تم نسخ تفاصيل الأرقام بنجاح! يمكنك لصقها مباشرة في رسالة أو ورقة.");
+      }).catch(() => {
+        alert("تعذر النسخ تلقائياً.");
+      });
+    });
+
+    resultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
   function resetFrom(level) {
