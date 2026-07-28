@@ -215,10 +215,10 @@
     const phoneOrder = "201040919691";
     const phoneReport = "201061806336";
 
-    const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالمقاس المطلوب: ${row[state.light]}`);
-    const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في المقاس:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
+    const waText = encodeURIComponent(`مرحباً، أبحث عن لمبات للسيارة: ${row.brand_ar} ${row.model_ar} موديل ${state.year}\nالرقم المطلوب: ${row[state.light]}`);
+    const reportText = encodeURIComponent(`تنبيه بخصوص خطأ في الرقم:\nالسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})`);
 
-    const shareMessage = `💡 دليل مقاسات لمبات السيارات من مطر لكماليات السيارات:\nسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n- الواطي: ${row.low_beam}\n- العالي: ${row.high_beam}\n- الشبورة: ${row.fog}\n\nابحث عن مقاس عربيتك من هنا: ${window.location.href}`;
+    const shareMessage = `💡 دليل أرقام لمبات السيارات من مطر لكماليات السيارات:\nسيارة: ${row.brand_ar} ${row.model_ar} (${state.year})\n- الواطي: ${row.low_beam}\n- العالي: ${row.high_beam}\n- الشبورة: ${row.fog}\n\nابحث عن رقم لمبة عربيتك من هنا: ${window.location.href}`;
 
     resultWrap.innerHTML = `
       <div class="result-card">
@@ -251,7 +251,7 @@
         }).catch(() => {});
       } else {
         navigator.clipboard.writeText(shareMessage);
-        alert("تم نسخ تفاصيل النتيجة ورابط الموقع! يمكنك لصقها وشركتها على واتساب أو فيسبوك بكل سهولة.");
+        alert("تم نسخ تفاصيل النتيجة ورابط الموقع! يمكنك لصقها ومشاركتها على واتساب أو فيسبوك بكل سهولة.");
       }
     });
   });
