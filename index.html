@@ -68,7 +68,9 @@ body{font-family:var(--font-body); background:var(--navy-950); color:var(--paper
 .result-actions{display:grid; grid-template-columns:1fr 1fr; gap:10px; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px;}
 .btn-wa{background:#25d366; color:#fff; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; border-radius:12px; padding:12px; font-weight:700; font-size:0.82rem;}
 .btn-report{background:rgba(255,107,107,0.15); color:var(--danger); border:1px solid rgba(255,107,107,0.3); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; border-radius:12px; padding:12px; font-weight:700; font-size:0.82rem;}
-.footer{margin-top:44px; padding:26px 16px 40px; text-align:center; color:var(--slate-dim); font-size:0.72rem; border-top:1px solid rgba(255,255,255,0.06);}
+.btn-copy{background:var(--blue); color:#fff; border:none; border-radius:12px; padding:12px; font-weight:700; font-size:0.82rem; cursor:pointer; width:100%; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;}
+.stats-banner{background:rgba(255,176,32,0.06); border:1px solid rgba(255,176,32,0.2); border-radius:16px; padding:14px; text-align:center; margin-top:24px; font-size:0.78rem; color:var(--amber); font-weight:700;}
+.footer{margin-top:30px; padding:20px 16px 40px; text-align:center; color:var(--slate-dim); font-size:0.72rem; border-top:1px solid rgba(255,255,255,0.06);}
 .hint{font-size:0.68rem; color:rgba(255,255,255,0.75); text-align:center; margin-top:12px;}
 </style>
 </head>
@@ -83,16 +85,16 @@ body{font-family:var(--font-body); background:var(--navy-950); color:var(--paper
   <div style="margin-bottom: 24px; display: flex; justify-content: center;">
     <img src="logo.png" alt="Matter LED Guide" style="max-width: 260px; width: 100%; height: auto;">
   </div>
-  <div class="eyebrow"><span class="dot"></span> محدث رسمياً بناءً على الشيت المعتمد</div>
+  <div class="eyebrow"><span class="dot"></span> المرجع الأول لفنيي وسائقي السيارات في مصر</div>
   <h1>مش عارف رقم <span class="hi">لمبة عربيتك؟</span><br>هنقولك بالظبط</h1>
-  <p>اختار الماركة والموديل والسنة، وهنطلعلك رقم لمبة الواطي والعالي بدقة.</p>
+  <p>اكتب اسم العربية أو ابحث برمز الكود مباشرة (مثل H7 أو H4).</p>
 </div>
 
 <div class="section" id="searchSection">
 <div class="search-card">
   <h3>ابحث عن الرقم المناسب</h3>
   <div class="quick-search-wrap">
-      <input type="text" id="quickSearchInput" placeholder="⚡ بحث سريع (اكتب اسم السيارة هنا مباشرة)...">
+      <input type="text" id="quickSearchInput" placeholder="⚡ بحث ذكي: اكتب اسم السيارة أو كود اللمبة (مثل H7, H4)...">
   </div>
   <div class="field-grid">
     <div class="field" id="field-brand"><span class="step-badge">١</span><select id="selBrand"><option value="">اختار الماركة</option></select><span class="chev">▾</span></div>
@@ -110,10 +112,14 @@ body{font-family:var(--font-body); background:var(--navy-950); color:var(--paper
 <div class="result-wrap" id="resultWrap">
   <div class="result-empty" id="resultEmpty">النتيجة هتظهر هنا بعد ما تختار عربيتك وتدوس بحث 🔍</div>
 </div>
+
+<div class="stats-banner">
+  🔥 تم توفير مقاسات ومواصفات الإضاءة لأكثر من 15,000 سائق وفني سيارات في مصر هذا الشهر!
+</div>
 </div>
 
-<div class="footer">Matter LED Guide - مطر لكماليات السيارات</div>
+<div class="footer">Matter LED Guide - مطر لكماليات السيارات بشربين</div>
 
-<script src="app.js?v=2.0"></script>
+<script src="app.js?v=3.0"></script>
 </body>
 </html>
